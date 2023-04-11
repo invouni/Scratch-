@@ -11,7 +11,7 @@ public class Graph {
 			this.wt = wt;
 		}
 	}
-//cycle detection directed graph
+//cycle detection undirected graph
         	public static boolean isCyclicUtil(ArrayList<Edge>[] graph, boolean vis[], int curr, int par) {
 		vis[curr] = true;
 		for (int i = 0; i < graph[curr].size(); i++) {
@@ -68,6 +68,36 @@ public class Graph {
 		graph[5].add(new Edge(6, 5, 3));
 
 	}
+//directed graph
+	public static boolean isCyclicUtil(ArrayList<Edge>[] graph, int curr, boolean
+									   vis[], boolean stack[]) {
+		vis[curr] = true;
+		stack[curr] = true;
+		for (int i = 0; i < graph[curr].size(); i++) {
+			Edge e = graph[curr].get(i);
+			if (stack[e.dest]) { //cycle exists
+				return true;
+			} else if (!vis[e.dest] && isCyclicUtil(graph, e.dest, vis, stack)) {
+				return true;
+			}
+		}
+		stack[curr] = false;
+		return false;
+	}
+//O(V + E)
+	public static boolean isCyclic(ArrayList<Edge>[] graph) {
+		boolean vis[] = new boolean[graph.length];
+		for (int i = 0; i < graph.length; i++) {
+			if (vis[i] == false) {
+				boolean cycle = isCyclicUtil(graph, i, vis, new boolean[vis.length]);
+				if (cycle) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	static void print(List<Edge> graph[]) {
 		for (int i = 0; i < graph.length; i ++) {
 			for (int j = 0; j < graph[i].size(); j++) {
