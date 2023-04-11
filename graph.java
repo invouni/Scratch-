@@ -11,6 +11,26 @@ public class Graph {
 			this.wt = wt;
 		}
 	}
+//cycle detection directed graph
+        	public static boolean isCyclicUtil(ArrayList<Edge>[] graph, boolean vis[], int curr, int par) {
+		vis[curr] = true;
+		for (int i = 0; i < graph[curr].size(); i++) {
+			Edge e = graph[curr].get(i);
+//case1
+			if (vis[e.dest] && e.dest != par) {
+				boolean isCycle = isCyclicUtil(graph, vis, e.dest, curr);
+				if (isCycle)
+					return true;
+			} else if (e.dest == par) {
+//case 2
+				continue;
+			} else {
+//case 3
+				return true;
+			}
+		}
+		return false;
+	}
 
 	//adding in graph
 	static void creat(List<Edge> graph[]) {
@@ -66,4 +86,6 @@ public class Graph {
 
 
 	}
+
+
 }
